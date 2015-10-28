@@ -6,7 +6,9 @@ public class Review {
 	
 	private String business_id;
 	
-	private String stars;
+	private String user_id;
+	
+	private int stars;
 	
 	private String text;
 	
@@ -17,9 +19,21 @@ public class Review {
 	{
 		setType((String) line.get("type"));		
 		setBusiness_id((String) line.get("business_id"));
-		setStars((String) line.get("stars"));
+		setUser_id((String) line.get("user_id"));
+		setStars((int) line.get("stars"));
 		setText((String) line.get("text"));
 		setDate((String) line.get("date"));
+	}
+	
+	//Default constructor
+	public Review()
+	{
+		setType(new String());
+		setBusiness_id(new String());
+		setUser_id(new String());
+		setStars(0);
+		setText(new String());
+		setDate(new String());
 	}
 
 	//Getters and Setters
@@ -40,11 +54,11 @@ public class Review {
 		this.business_id = business_id;
 	}
 
-	public String getStars() {
+	public int getStars() {
 		return stars;
 	}
 
-	public void setStars(String stars) {
+	public void setStars(int stars) {
 		this.stars = stars;
 	}
 
@@ -62,6 +76,14 @@ public class Review {
 
 	public void setDate(String date) {
 		this.date = date;
+	}
+
+	public String getUser_id() {
+		return user_id;
+	}
+
+	public void setUser_id(String user_id) {
+		this.user_id = user_id;
 	}
 	
 	

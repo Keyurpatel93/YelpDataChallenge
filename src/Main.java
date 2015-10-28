@@ -1,9 +1,7 @@
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.Hashtable;
 
 import org.json.*;
 
@@ -12,63 +10,66 @@ import org.json.*;
 public class Main {
 
 	public static void main (String [] args) throws IOException, InterruptedException{
-		System.out.println("Hello");
 		
-
-		
-		String businessJSONPath = "yelp_dataset_challenge_academic_dataset/yelp_academic_dataset_business.json";
 		String userJSONPath = "yelp_dataset_challenge_academic_dataset/yelp_academic_dataset_user.json";
-		//String userJSONPath = "yelp_dataset_challenge_academic_dataset/usersSubset.json";
 		
-		String tipJSONPath = "yelp_dataset_challenge_academic_dataset/yelp_academic_dataset_tip.json";
-		String checkinJSONPath = "yelp_dataset_challenge_academic_dataset/yelp_academic_dataset_checkin.json";
 		String reviewJSONPath = "yelp_dataset_challenge_academic_dataset/yelp_academic_dataset_review.json";
 		
 		
-		YelpDataset dataSet = new YelpDataset();
-		//dataSet.loadJSON(businessJSONPath);
-		dataSet.loadJSON(userJSONPath);
-		//dataSet.loadJSON(checkinJSONPath);
-		//dataSet.loadJSON(reviewJSONPath);
-		//dataSet.loadJSON(tipJSONPath);
-		dataSet.test();
-	
-		
-		ArrayList<FriendsReviews> friendReviews = dataSet.test();
-		
-		System.out.println("Size of FriendsReviews: " + friendReviews.size()) ;
-		
-		//System.out.println(friendReviews.get(1).table.size());
-		
-		
-		LinkedList<JSONObject> tmp = new LinkedList<>();
-		int count = 0;
 		try{	
-			BufferedReader br = new BufferedReader(new FileReader(reviewJSONPath));  
+			BufferedReader br = new BufferedReader(new FileReader(userJSONPath));
 		    String line = br.readLine();
 		    while(line != null){
-		    	//System.out.println(line);
-		    	count++;
-		    	JSONObject obj = new JSONObject(line);
-		    	String reviewUserID = (String) obj.get("user_id");
 		    	
-			    for(FriendsReviews friend :friendReviews){
-			    	if(friend.table.containsKey(reviewUserID)){
-			    		//friend.table.put(reviewUserID, friend.table.get(reviewUserID).add(obj));
-			    		//friend.table.put(reviewUserID, friend.table.get(reviewUserID).add(obj));
-			    	
-			    	}
-			    		
-			    }
-			    
-			    
-			    line = br.readLine();  
-			    
-		    }	
-		    System.out.println(count);
+		    	User usr = new User(new JSONObject(line));
+		    	
+		    	System.out.print("Number of friends" + usr.getFriend_ids().size());
+		    	
+		    	Hashtable<String, User> frnds = new Hashtable<String, User>();
+		    	
+		    	BufferedReader br2 = new BufferedReader(new FileReader(reviewJSONPath));
+		    	
+		    	String line2 = br2.readLine();
+		    		
+		    	//int count = 0;
+		    	
+		    	while(line2!=null)
+		    	{
+		    		//count++;
+		    		
+		    		Review rev = new Review(new JSONObject(line2));
+		    		
+		    		if(usr.getId().equals(rev.getUser_id()))
+		    		{
+		    			usr.getReviews().add(rev);
+		    		}
+		    		else if(usr.getFriend_ids().contains(rev.getUser_id()))
+		    		{
+		    		   User frnd;
+		    		   
+		    		   if(frnds.containsKey(rev.getUser_id()))
+		    		   {
+		    			   frnd = frnds.get(rev.getUser_id());
+		    		   }
+		    		   else
+		    		   {
+		    			   frnd = new User();
+		    			   frnd.setId(rev.getUser_id());
+		    		   }
+		    		   
+		    		   frnd.getReviews().add(rev);
+		    		   frnds.put(rev.getUser_id(), frnd);
+		    		   
+		    		}
+		    		line2 = br2.readLine();
+		    	}
+		    	br2.close();
+		    	///do processing
+		    	line = br.readLine();
+			 }
+		    br.close();
 		} catch (Exception ex) {
 			System.out.println("Error Message: " + ex.toString());
-		   
 		}
 		
 		
