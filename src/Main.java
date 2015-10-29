@@ -23,7 +23,7 @@ public class Main {
 		    	
 		    	User usr = new User(new JSONObject(line));
 		    	
-		    	System.out.print("Number of friends" + usr.getFriend_ids().size());
+		    	System.out.print("Number of friends: " + usr.getFriend_ids().size());
 		    	
 		    	Hashtable<String, User> frnds = new Hashtable<String, User>();
 		    	
