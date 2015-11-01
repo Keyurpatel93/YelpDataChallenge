@@ -8,7 +8,7 @@ public class Review {
 	
 	private String user_id;
 	
-	private int stars;
+	private float stars;
 	
 	private String text;
 	
@@ -20,7 +20,9 @@ public class Review {
 		setType((String) line.get("type"));		
 		setBusiness_id((String) line.get("business_id"));
 		setUser_id((String) line.get("user_id"));
-		setStars((int) line.get("stars"));
+		///System.out.println(line.get("stars"));
+		
+		setStars((float) line.getDouble("stars"));
 		setText((String) line.get("text"));
 		setDate((String) line.get("date"));
 	}
@@ -54,11 +56,11 @@ public class Review {
 		this.business_id = business_id;
 	}
 
-	public int getStars() {
+	public float getStars() {
 		return stars;
 	}
 
-	public void setStars(int stars) {
+	public void setStars(float stars) {
 		this.stars = stars;
 	}
 

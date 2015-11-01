@@ -1,4 +1,9 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.json.JSONObject;
+
 
 public class Business {
 
@@ -22,6 +27,8 @@ public class Business {
 	
 	private int review_count;
 	
+	private List<Float> friends_ratings;
+	
 	// Default Constructor
 	public Business()
 	{
@@ -35,6 +42,7 @@ public class Business {
 		setLongitude(new Double(0));
 		setStars(new Double(0));
 		setReview_count(0);
+		setFriends_ratings(new ArrayList<Float>());
 	}
 	
 	public Business(JSONObject line)
@@ -49,6 +57,7 @@ public class Business {
 		setLongitude((Double)line.get("longitude"));
 		setStars((Double)line.get("stars"));
 		setReview_count((int)line.get("review_count"));
+		setFriends_ratings(new ArrayList<Float>());
 	}
 
 	public String getType() {
@@ -129,5 +138,42 @@ public class Business {
 
 	public void setReview_count(int review_count) {
 		this.review_count = review_count;
+	}
+
+	public List<Float> getFriends_ratings() {
+		return friends_ratings;
+	}
+
+	public void setFriends_ratings(ArrayList<Float> friends_ratings) {
+		this.friends_ratings = friends_ratings;
+	}
+	
+	// Function to return average rating
+	public float getAverage_friends_ratings()
+	{
+		
+		float total = (float) 0.0;
+		
+		for(int i=0; i< friends_ratings.size(); i++)
+		{
+			total += (float) friends_ratings.get(i);
+		}
+		
+		System.out.println("Total: " + total + " Size: " + friends_ratings.size());
+		
+		return (float) total/(float) friends_ratings.size();
+	}
+	
+	// Function to return median rating
+	public float getMedian_friends_ratings()
+	{
+		Collections.sort(friends_ratings);
+		
+		int s = friends_ratings.size();
+		
+		if(s%2==0)
+			return (float)(friends_ratings.get(s/2 - 1) + friends_ratings.get(s/2))/ 2;
+		else
+			return friends_ratings.get((int)Math.floor(s/2));
 	}
 }

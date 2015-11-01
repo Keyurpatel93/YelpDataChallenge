@@ -33,9 +33,9 @@ public class User {
 				list.add(jsonArray.get(i).toString());
 			} 
 		}
-
 		setFriend_ids(list);
 		setReviews(new ArrayList<Review>());
+		
 	}
 	
 	// Default constructor
